@@ -1,0 +1,16 @@
+server:
+  port: 8094
+
+spring:
+  application:
+    name: pressureMonitorSys-ws
+  profiles:
+    active: dev
+
+logging:
+  level:
+    root: info
+    org.example: debug
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n'
+
