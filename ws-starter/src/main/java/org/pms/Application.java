@@ -1,8 +1,9 @@
-package org.pms.ws;
+package org.pms;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * WebSocket服务启动类
@@ -13,12 +14,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @Slf4j
 @SpringBootApplication
-public class WsApplication {
-	
+@EnableFeignClients(basePackages = "org.pms.trigger.feign")
+public class Application {
+
 	public static void main(String[] args) {
-		SpringApplication.run(WsApplication.class, args);
+		SpringApplication.run(Application.class, args);
 		log.info("WebSocket服务启动成功！");
 	}
-	
+
 }
 

@@ -1,14 +1,14 @@
-package org.pms.ws.handler;
+package org.pms.core.handler;
 
 import com.alibaba.fastjson2.JSON;
+import com.pms.auth.core.model.AuthenticatedUser;
+import com.pms.auth.core.service.JwtVerifier;
 import com.pms.auth.core.utils.JwtUtil;
-import com.pms.auth.starter.service.JwtService;
-import com.pms.auth.starter.service.LoginUser;
 import com.pms.types.Constants;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.pms.ws.service.WebSocketSessionManager;
-import org.springframework.security.core.GrantedAuthority;
+import org.pms.core.service.WebSocketSessionManager;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -32,13 +32,8 @@ import java.util.Map;
 @Component
 public class AlertWebSocketHandler extends TextWebSocketHandler {
 	
-	private final JwtService jwtService;
-	private final WebSocketSessionManager sessionManager;
-	
-	public AlertWebSocketHandler(JwtService jwtService, WebSocketSessionManager sessionManager) {
-		this.jwtService = jwtService;
-		this.sessionManager = sessionManager;
-	}
+	@Resource
+	private WebSocketSessionManager sessionManager;
 	
 	/**
 	 * WebSocket连接建立后调用
@@ -60,17 +55,16 @@ public class AlertWebSocketHandler extends TextWebSocketHandler {
 			JwtUtil.validateToken(token);
 			
 			// 3. 从token中获取用户信息
-			LoginUser loginUser = jwtService.getLoginUserFromToken(token);
-			Long userId = loginUser.getUserAggregate().getId();
-			String username = loginUser.getUserAggregate().getUsername();
+			AuthenticatedUser authenticatedUser = JwtVerifier.getAuthenticatedUser(token);
+			Long userId = authenticatedUser.getUserId();
+			String username = authenticatedUser.getUsername();
 			
 			// 4. 验证角色权限（只允许admin和operator）
-			boolean hasPermission = loginUser.getAuthorities().stream()
-					.map(GrantedAuthority::getAuthority)
+			boolean hasPermission = authenticatedUser.getAuthorities().stream()
 					.anyMatch(role -> "ROLE_admin".equals(role) || "ROLE_operator".equals(role));
 			
 			if (!hasPermission) {
-				log.warn("WebSocket握手失败: 用户{}没有权限, roles={}", username, loginUser.getAuthorities());
+				log.warn("WebSocket握手失败: 用户{}没有权限, roles={}", username, authenticatedUser.getAuthorities());
 				session.close(CloseStatus.NOT_ACCEPTABLE.withReason("Permission denied"));
 				return;
 			}

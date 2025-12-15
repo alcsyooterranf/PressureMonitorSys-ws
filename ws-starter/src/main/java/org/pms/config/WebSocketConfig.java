@@ -1,7 +1,7 @@
-package org.pms.ws.config;
+package org.pms.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.pms.ws.handler.AlertWebSocketHandler;
+import org.pms.core.handler.AlertWebSocketHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;

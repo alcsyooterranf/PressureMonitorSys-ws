@@ -1,4 +1,4 @@
-package org.pms.ws.service;
+package org.pms.core.service;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
