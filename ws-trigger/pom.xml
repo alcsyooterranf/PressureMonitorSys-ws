@@ -33,6 +33,11 @@
             <artifactId>ws-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.pms</groupId>
+            <artifactId>ws-api</artifactId>
+        </dependency>
+
         <!-- auth-api -->
         <dependency>
             <groupId>org.pms</groupId>

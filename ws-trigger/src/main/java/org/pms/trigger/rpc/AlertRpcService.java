@@ -1,7 +1,8 @@
-package org.pms.trigger.controller;
+package org.pms.trigger.rpc;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.pms.api.IAlterRpcService;
 import org.pms.core.service.AlertPushService;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,16 +11,16 @@ import java.util.Map;
 
 /**
  * 告警推送控制器
- * 提供RPC接口供backend服务调用
+ * 提供RPC接口供business服务调用
  *
- * @author zeal
+ * @author alcsyooterranf
  * @version 1.0
  * @since 2025-11-25
  */
 @Slf4j
 @RestController
 @RequestMapping("/api/alert")
-public class AlertPushController {
+public class AlertRpcService implements IAlterRpcService {
 	
 	@Resource
 	private AlertPushService alertPushService;
