@@ -44,12 +44,16 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!-- Common模块 - 从本地Maven仓库引用 -->
+        <!-- auth-api -->
         <dependency>
-            <groupId>com.pms</groupId>
-            <artifactId>common-auth</artifactId>
+            <groupId>org.pms</groupId>
+            <artifactId>auth-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.pms</groupId>
+            <artifactId>common-types</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

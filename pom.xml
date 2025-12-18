@@ -34,8 +34,8 @@
 
     <properties>
         <revision>1.0-SNAPSHOT</revision>
+        <ws-api.version>1.0.1</ws-api.version>
         <java.version>17</java.version>
-        <ws-api.version>1.0.0</ws-api.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -113,17 +113,11 @@
                 <version>1.18.32</version>
             </dependency>
 
-            <!-- Common模块 - 从本地Maven仓库引用 -->
-            <dependency>
-                <groupId>com.pms</groupId>
-                <artifactId>common-auth</artifactId>
-                <version>1.0.9</version>
-            </dependency>
             <!-- auth-api -->
             <dependency>
                 <groupId>org.pms</groupId>
                 <artifactId>auth-api</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.2</version>
             </dependency>
 
             <!-- 工程模块 -->
@@ -141,6 +135,12 @@
                 <groupId>org.pms</groupId>
                 <artifactId>ws-trigger</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.pms</groupId>
+                <artifactId>common-types</artifactId>
+                <version>1.1.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

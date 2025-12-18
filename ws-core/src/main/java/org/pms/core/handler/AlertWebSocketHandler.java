@@ -1,14 +1,14 @@
 package org.pms.core.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.pms.auth.core.model.AuthenticatedUser;
-import com.pms.auth.core.service.JwtVerifier;
-import com.pms.auth.core.utils.JwtUtil;
-import com.pms.types.Constants;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.pms.api.dto.AuthenticatedUser;
+import org.pms.api.utils.JwtUtil;
+import org.pms.api.utils.JwtVerifier;
 import org.pms.core.service.WebSocketSessionManager;
+import org.pms.types.WsConstants;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -144,8 +144,8 @@ public class AlertWebSocketHandler extends TextWebSocketHandler {
 		String token = queryParams.get("token");
 		if (StringUtils.isNotBlank(token)) {
 			// 如果token带有Bearer前缀，去掉前缀
-			if (token.startsWith(Constants.TOKEN_PREFIX)) {
-				token = token.substring(Constants.TOKEN_PREFIX.length());
+			if (token.startsWith(WsConstants.TOKEN_PREFIX)) {
+				token = token.substring(WsConstants.TOKEN_PREFIX.length());
 			}
 		}
 		

@@ -2,9 +2,11 @@ package org.pms.initialization;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.pms.api.common.ResponseCode;
-import org.pms.api.common.RpcResponse;
+import org.pms.api.utils.JwtUtil;
 import org.pms.trigger.feign.IAuthRpcClient;
+import org.pms.types.AuthCode;
+import org.pms.types.Response;
+import org.pms.types.WsCode;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -29,7 +31,7 @@ public class WsApplicationRunner implements InitializingBean {
 	@Resource
 	private IAuthRpcClient authRpcClient;
 	
-	@Value("${pms.auth.public-key-path}")
+	@Value("${rpc.auth.public-key-path}")
 	private String publicKeyPath;
 	
 	@Override
@@ -60,6 +62,9 @@ public class WsApplicationRunner implements InitializingBean {
 			}
 		}
 		
+		// 3. 初始化公钥
+		JwtUtil.initKey();
+		
 		log.info("公钥配置初始化完成");
 	}
 	
@@ -83,9 +88,9 @@ public class WsApplicationRunner implements InitializingBean {
 	 */
 	private String fetchPublicKeyFromAuthService() throws Exception {
 		log.info("调用认证服务获取公钥");
-		RpcResponse<String> response = authRpcClient.getPublicKey();
+		Response<String> response = authRpcClient.getPublicKey();
 		
-		if (response == null || !Objects.equals(response.getCode(), ResponseCode.SUCCESS.getCode())) {
+		if (response == null || !Objects.equals(response.getCode(), AuthCode.SUCCESS.getCode())) {
 			String errorMsg = response != null ? response.getMessage() : "响应为空";
 			log.error("获取公钥失败: {}", errorMsg);
 			throw new RuntimeException("获取公钥失败: " + errorMsg);
@@ -144,9 +149,9 @@ public class WsApplicationRunner implements InitializingBean {
 	private boolean checkPublicKeyConsistency(String localPublicKey) {
 		try {
 			log.info("调用认证服务检查公钥一致性");
-			RpcResponse<Boolean> response = authRpcClient.checkPublicKey(localPublicKey);
+			Response<Boolean> response = authRpcClient.checkPublicKey(localPublicKey);
 			
-			if (response == null || !Objects.equals(response.getCode(), ResponseCode.SUCCESS.getCode())) {
+			if (response == null || !Objects.equals(response.getCode(), WsCode.SUCCESS.getCode())) {
 				String errorMsg = response != null ? response.getMessage() : "响应为空";
 				log.error("检查公钥一致性失败: {}", errorMsg);
 				return false;
